@@ -1,0 +1,17 @@
+sudo: false
+language: rust
+before_script:
+- cargo install cobalt-bin
+- export PATH="$PATH:/home/travis/.cargo/bin"
+script:
+- cobalt build
+after_success: |
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  cobalt import &&
+  git config user.name "HatsanK" &&
+  git config user.email "hatsankun@gmail.com" &&
+  git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
+env:
+  global:
+    secure: pi6n/Ucq0LDSqeDkiq+KLAI6sTT4S8GDP7VqiOCSeVlVOLFvSYHyKrr4L3g9eh+0a7ovuvhiw26JsoeL+6OzanljZMqZlGgirCbEwPAlzdGJF+jYKNuusIEd1X7VvNUflbh7cUod7BxOiTE7vgvw2xKWI/rIW2BxVUaXpE30DillwVFv07YZNtkqyt8bG8vyq5s9dX7KKPbETkKjvfv4cGsE4kK3iJ6lEwIUfCIXFniI2L/efWrfiwW0LkLXNwn1XdB8UOizlum1Cu7RArmNgDJ+PJkrgvIYFUjq+na5WWIZscNV6EJJgX34ddS3Zbf0msRtKDRtj/Lk9vvBefA7SEV5QvUjwotKLge9Ke0C6T783oX38wqHsmIV1BT3E3sp54uxTM7hQ0fhgfyPeC+GnwvqF0Oxdo92/0hN7Nf4SBgrsFl9jUjKQoGfy0z63ZhzTPYuFSJKnuVVX7LrRVHnZ7IYTR53wmkAsmgXRLCcPTM77FYINho7uCDm7Nw6UQVd+QV1FQ8EOxAEUMhAVZSGySG4ytG6JOob3c026jv5BkPKlJFyalLn76DgPD8S7BNaJkHegPXgs1JQJfLC8D5m35mg0EcLbdlnVRlw5+CTvg4SF58SsMDXouMpIviJhhmeF8P0oxBdHrhKHXgNwgaqBcszFe4b0HU1oZZRUuBBBxw=
